@@ -73,7 +73,7 @@ class CustomListAdapter implements ListAdapter {
             Date curr= new Date();
 
             float days = (float) ((curr.getTime()-subjectData.date)) / (1000*60*60*24);
-            if(days<2)
+            if(days>2)
             {
                 idtext.setBackgroundResource(R.color.red);
                 EditButton.setVisibility(View.GONE);
