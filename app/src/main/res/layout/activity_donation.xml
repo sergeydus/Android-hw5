@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DonationActivity"
+    android:background="@drawable/money">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="TOTAL DONATED:"
+            android:background="@color/colorAccent"
+            android:textSize="32dp"/>
+
+        <TextView
+            android:id="@+id/total_donate"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:textSize="30dp" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/dancing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/dancing"
+
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/thanks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/holo_orange_dark"
+            android:fontFamily="sans-serif-black"
+            android:text="Thank You For Donating"
+            android:textAlignment="center"
+            android:textSize="22dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/enteryourdonation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="Enter Your Donation:"
+            android:background="@color/colorPrimary"/>
+
+        <EditText
+            android:id="@+id/donate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+            android:inputType="numberSigned|numberDecimal" />
+
+        <Button
+            android:id="@+id/clickDonate"
+            android:layout_width="216dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Donate"
+            android:visibility="visible"
+            android:onClick="donate"/>
+
+        <Button
+            android:id="@+id/ret"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
+            android:text="Go Back To Kotel"
+            android:onClick="ret"/>
+
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.LinearLayoutCompat>

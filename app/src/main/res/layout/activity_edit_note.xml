@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:weightSum="10"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:background="#FFFFFF">
+            <TextView
+                android:id="@+id/TitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title:"
+                android:layout_centerHorizontal="true"
+                android:textSize="30sp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Put Title here"
+                android:id="@+id/EditTextTitle"
+                android:layout_below="@id/TitleTextView"
+                android:inputType="" />
+            <TextView
+                android:id="@+id/DescriptionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/EditTextTitle"
+                android:text="Description:"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:textSize="30sp"/>
+            <EditText
+                android:id="@+id/DescriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Put Description here"
+                android:layout_below="@id/DescriptionTextView"/>
+            <Button
+                android:id="@+id/OkEditButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/DescriptionEditText"
+                android:layout_centerHorizontal="true"
+                android:text="Save"
+                android:onClick="SaveButtonClick"/>
+        </RelativeLayout>
+</LinearLayout>
