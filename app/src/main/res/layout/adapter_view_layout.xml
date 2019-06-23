@@ -7,20 +7,17 @@
     android:weightSum="100">
 
 
-    <TextView
-        android:gravity="center"
-        android:textAlignment="center"
-        android:text="ID"
+    <ImageView
         android:layout_width="0dp"
         android:layout_height="150dp"
-        android:id="@+id/textView1"
-        android:layout_weight="15"/>
+        android:id="@+id/ImageView"
+        android:layout_weight="30"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="65">
+        android:layout_weight="50">
 
         <TextView
             android:gravity="center"

@@ -71,6 +71,7 @@
                     android:layout_below="@id/password_edittext"
                     android:layout_alignParentStart="true"
                     android:text="Register"
+                    android:id="@+id/RegisterButton"
                     />
             </RelativeLayout>
 

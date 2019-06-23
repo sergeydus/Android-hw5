@@ -18,19 +18,76 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
-
+    private FirebaseAuth mAuth;
     double sum_donation=0;
     ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth=FirebaseAuth.getInstance();
+
+        //
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        Note newnote = new Note("Buy cheese","We need cheese",(new Date()).getTime());
+        DatabaseReference myRef = database.getReference("Notes/"+mAuth.getUid());
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Log.e("Count " ,""+dataSnapshot.getChildrenCount());
+                ArrayList<DataSnapshot> notes = new ArrayList<>();
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    //Note post = postSnapshot.getValue(Note.class);
+                    Log.e("Get Data", postSnapshot.getValue(Note.class).toString());
+                    notes.add(postSnapshot);
+                    Log.e("Data",postSnapshot.getKey());
+                }
+                CustomListAdapter customAdapter = new CustomListAdapter(NoteActivity.this, notes);
+                listView.setAdapter(customAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("onCancelled", "Failed to read value.", error.toException());
+            }
+        });
+//        DatabaseReference newChildRef = myRef.push();
+//        String key = newChildRef.getKey();
+//        myRef.child(key).setValue(newnote);
+        //
         Log.d("asd", "onCreate: creating");
         setContentView(R.layout.activity_note);
         sum_donation=getIntent().getDoubleExtra("donation",0);
+        Button SignoutButton = findViewById(R.id.SignoutButton);
+        SignoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(NoteActivity.this, MainActivity.class);
+                //Intent intent = new Intent(v.getContext(), EditNoteActivity.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
     @Override
     public void onResume(){
@@ -46,29 +103,7 @@ public class NoteActivity extends AppCompatActivity {
                 openEditWindow();
             }
         });
-        DBHelper db = new DBHelper(this);
-        /*for(int i=0;i<5;i++){
-            Note p = new Note(i,
-                    "title"+i,
-                    "content"+i);
-            db.getWritableDatabase().execSQL(p.getSQLInsertString());
-        }*/
-        //db.updateData("1","nigger","wapon","");
-        ArrayList<Note> notes = new ArrayList<>();
-        Cursor c = db.getReadableDatabase().rawQuery(Note.SELECT_ALL,
-                null);
 
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            Note p = new Note(c);
-            notes.add(p);
-            c.moveToNext();
-        }
-
-        Log.i("notes", notes.size() + "");
-
-        CustomListAdapter customAdapter = new CustomListAdapter(this, notes);
-        listView.setAdapter(customAdapter);
     }
     public void OnDonationsClick(View view) {
         Intent intent = new Intent(this, DonationActivity.class);

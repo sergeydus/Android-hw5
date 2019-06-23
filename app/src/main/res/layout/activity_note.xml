@@ -23,7 +23,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Donations"
+            android:layout_marginEnd="100px"
             android:onClick="OnDonationsClick"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="signout"
+            android:id="@+id/SignoutButton"/>
     </android.support.v7.widget.LinearLayoutCompat>
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
