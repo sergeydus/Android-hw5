@@ -33,6 +33,8 @@ public class DonationActivity extends AppCompatActivity {
     FirebaseDatabase mdataBase = FirebaseDatabase.getInstance();
     DatabaseReference myRef = mdataBase.getReference("Donation/");
     private  String key;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,24 +44,18 @@ public class DonationActivity extends AppCompatActivity {
         Bundle bundle=getIntent().getExtras();
         this.key=bundle.getString("key","");
         this.total=bundle.getFloat("sum_donation",(float)0);
-        addtotal();
-        TextView tv=findViewById(R.id.total_donate);
-        tv.setVisibility(View.GONE);
-    }
-
-    private void addtotal() {
         final DatabaseReference mdatabase=FirebaseDatabase.getInstance().getReference();
-        mdatabase.child("Donation"+FirebaseAuth.getInstance().getUid()).addValueEventListener
+        mdatabase.child("Donation/"+FirebaseAuth.getInstance().getUid()).addValueEventListener
                 (new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()) {
-                                Log.e("tago",dataSnapshot.child("/amount").getValue().toString());
-                                    total_perU += Float.valueOf(dataSnapshot.child("/amount").getValue().toString());
-                                    total+=total_perU;
-                                }
-                                else
-                                    return;
+                        if(dataSnapshot.exists()) {
+                            Log.e("tago",dataSnapshot.child("/amount").getValue().toString());
+                            total_perU += Float.valueOf(dataSnapshot.child("/amount").getValue().toString());
+                            total+=total_perU;
+                        }
+                        else
+                            return;
                     }
 
                     @Override
@@ -67,8 +63,10 @@ public class DonationActivity extends AppCompatActivity {
 
                     }
                 });
-
+        TextView tv=findViewById(R.id.total_donate);
+        tv.setVisibility(View.GONE);
     }
+
 
     public void donate(View view){
         FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
