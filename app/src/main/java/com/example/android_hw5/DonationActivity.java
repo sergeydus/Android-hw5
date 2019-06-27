@@ -72,6 +72,7 @@ public class DonationActivity extends AppCompatActivity {
                 });
     }
 
+
     public void donate(View view){
         FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
 
