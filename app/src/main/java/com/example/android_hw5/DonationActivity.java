@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,20 +29,16 @@ import com.google.firebase.storage.UploadTask;
 import pl.droidsonroids.gif.GifImageView;
 
 public class DonationActivity extends AppCompatActivity {
-    float total,total_perU;
+    //float total,total_perU;
+    public float total,total_perU;
     private StorageReference donationSumRef;
     FirebaseDatabase mdataBase = FirebaseDatabase.getInstance();
     DatabaseReference myRef = mdataBase.getReference("Donation/");
-    private  String key;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation);
-        donationSumRef = FirebaseStorage.getInstance().getReference();
-        myRef.child("Total").setValue(total);
-        Bundle bundle=getIntent().getExtras();
-        this.key=bundle.getString("key","");
-        this.total=bundle.getFloat("sum_donation",(float)0);
         addtotal();
         TextView tv=findViewById(R.id.total_donate);
         tv.setVisibility(View.GONE);
@@ -49,17 +46,23 @@ public class DonationActivity extends AppCompatActivity {
 
     private void addtotal() {
         final DatabaseReference mdatabase=FirebaseDatabase.getInstance().getReference();
-        mdatabase.child("Donation"+FirebaseAuth.getInstance().getUid()).addValueEventListener
+        mdatabase.child("Donation/").addValueEventListener
                 (new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()) {
-                                Log.e("tago",dataSnapshot.child("/amount").getValue().toString());
-                                    total_perU += Float.valueOf(dataSnapshot.child("/amount").getValue().toString());
-                                    total+=total_perU;
-                                }
-                                else
-                                    return;
+                        if(dataSnapshot.child(FirebaseAuth.getInstance().getUid()).exists()) {
+                            total_perU += Float.valueOf(dataSnapshot.child(FirebaseAuth.getInstance().getUid()+"/amount").getValue().toString());
+                            //MainActivity.sumTotal += Float.valueOf(myRef.child("/Total").toString());//.//setValue(total);
+                            MainActivity.sumTotal=Float.valueOf(dataSnapshot.child("/Total").getValue().toString());
+                            Log.e("TOTAL",""+MainActivity.sumTotal);
+                            TextView tv1=findViewById(R.id.total_donate);
+                            tv1.setText(String.valueOf(MainActivity.sumTotal)+"₪");
+
+                        }
+                        else{
+                            MainActivity.sumTotal=Float.valueOf(dataSnapshot.child("/Total").getValue().toString());
+                            return;
+                        }
                     }
 
                     @Override
@@ -67,7 +70,6 @@ public class DonationActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
 
     public void donate(View view){
@@ -79,26 +81,36 @@ public class DonationActivity extends AppCompatActivity {
         Button b1= findViewById(R.id.clickDonate);
         GifImageView imageView= findViewById(R.id.dancing);
         TextView tv2= findViewById(R.id.thanks);
-        float num1= Float.valueOf(ed1.getText().toString());
+        if(!ed1.getText().toString().equals("")){
+            float num1= Float.valueOf(ed1.getText().toString());
+            ed1.setVisibility(View.GONE);
+            b1.setVisibility(View.GONE);
+            tv3.setVisibility(View.GONE);
 
-        ed1.setVisibility(View.GONE);
-        b1.setVisibility(View.GONE);
-        tv3.setVisibility(View.GONE);
+            float sum=num1+total_perU;
+            //float sumTotal =+ sum;
+            Toast.makeText(DonationActivity.this,"sumTotal is "+String.valueOf(MainActivity.sumTotal), Toast.LENGTH_SHORT).show();
+            MainActivity.sumTotal = MainActivity.sumTotal + num1;
+            Toast.makeText(DonationActivity.this,"sumTotal is "+String.valueOf(MainActivity.sumTotal), Toast.LENGTH_SHORT).show();
+            DatabaseReference dataRef = dataBase.getReference("Donation/"+FirebaseAuth.getInstance().getUid());
+           // myRef.push();
+            total_perU=sum;
+            total= total+MainActivity.sumTotal;
+            //Toast.makeText(DonationActivity.this,"sumTotal is "+String.valueOf(MainActivity.sumTotal), Toast.LENGTH_SHORT).show();
+            dataRef.child("amount").setValue(total_perU);
+            myRef.child("Total").setValue(total);
+            tv1.setVisibility(View.VISIBLE);
+            tv1.setText(String.valueOf(total)+"₪");
+            imageView.setVisibility(View.VISIBLE);
+            tv2.setVisibility(View.VISIBLE);
 
-        float sum=num1+total_perU;
-        DatabaseReference dataRef = dataBase.getReference("Donation/"+FirebaseAuth.getInstance().getUid());
-        DatabaseReference newChildRef = dataRef.push();
-        this.key=newChildRef.getKey();
-        total_perU=sum;
-        dataRef.child("amount").setValue(total_perU);
-        tv1.setVisibility(View.VISIBLE);
-        tv1.setText(String.valueOf(sum)+"₪");
-        imageView.setVisibility(View.VISIBLE);
-        tv2.setVisibility(View.VISIBLE);
-
+        }
     }
     public void ret(View view){
         Intent intent= new Intent(this, NoteActivity.class);
         startActivity(intent);
     }
 }
+
+
+

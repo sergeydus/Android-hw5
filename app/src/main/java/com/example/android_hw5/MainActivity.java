@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     public String username = "admin";
     public String password = "admin";
     private FirebaseAuth mAuth;
+    public static float sumTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
